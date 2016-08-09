@@ -103,7 +103,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
     public void createSocket(final Integer cId, final ReadableMap options) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute createSocket");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded createSocket");
+
                 if (cId == null) {
                     FLog.e(TAG, "createSocket called with nil id parameter.");
                     return;
@@ -118,7 +126,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                 UdpSocketClient.Builder builder = new UdpSocketClient.Builder(UdpSockets.this, UdpSockets.this);
                 mClients.put(cId, builder.build());
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded createSocket");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -129,7 +141,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                      final Callback callback) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute bind");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded bind");
+
                 UdpSocketClient client = findClient(cId, callback);
                 if (client == null) {
                     return;
@@ -154,7 +174,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                     callback.invoke(UdpErrorUtil.getError(null, ioe.getMessage()));
                 }
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded bind");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -164,7 +188,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
     public void addMembership(final Integer cId, final String multicastAddress) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute addMembership");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded addMembership");
+
                 UdpSocketClient client = findClient(cId, null);
                 if (client == null) {
                     return;
@@ -196,7 +228,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                     FLog.e(TAG, "addMembership", ioe);
                 }
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded addMembership");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -206,7 +242,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
     public void dropMembership(final Integer cId, final String multicastAddress) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute dropMembership");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded dropMembership");
+
                 UdpSocketClient client = findClient(cId, null);
                 if (client == null) {
                     return;
@@ -219,7 +263,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                     FLog.e(TAG, "dropMembership", ioe);
                 }
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded dropMembership");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -230,7 +278,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                      final Integer port, final String address, final Callback callback) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute send");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded send");
+
                 UdpSocketClient client = findClient(cId, callback);
                 if (client == null) {
                     return;
@@ -247,7 +303,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                     callback.invoke(UdpErrorUtil.getError(null, ioe.getMessage()));
                 }
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded send");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -257,7 +317,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
     public void close(final Integer cId, final Callback callback) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute close");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded close");
+
                 UdpSocketClient client = findClient(cId, callback);
                 if (client == null) {
                     return;
@@ -277,7 +345,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
 
                 mClients.remove(cId);
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded close");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -287,7 +359,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
     public void setBroadcast(final Integer cId, final Boolean flag, final Callback callback) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute setBroadcast");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded setBroadcast");
+
                 UdpSocketClient client = findClient(cId, callback);
                 if (client == null) {
                     return;
@@ -300,7 +380,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                     callback.invoke(UdpErrorUtil.getError(null, e.getMessage()));
                 }
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded setBroadcast");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -310,7 +394,15 @@ public final class UdpSockets extends ReactContextBaseJavaModule
     public void didReceiveData(final UdpSocketClient socket, final String data, final String host, final int port) {
         new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
             @Override
+            protected void onPreExecute() {
+                FLog.i("UdpSocket", "onPreExecute didReceiveData");
+                super.onPreExecute();
+            }
+
+            @Override
             protected void doInBackgroundGuarded(Void... params) {
+                FLog.i("UdpSocket", "doInBackgroundGuarded didReceiveData");
+
                 int clientID = -1;
                 for(int i = 0; i < mClients.size(); i++) {
                     clientID = mClients.keyAt(i);
@@ -334,7 +426,11 @@ public final class UdpSockets extends ReactContextBaseJavaModule
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("udp-" + clientID + "-data", eventParams);
             }
-        }.execute();
+
+            protected void onPostExecuteGuarded(Void result) {
+                FLog.i("UdpSocket", "onPostExecuteGuarded didReceiveData");
+            };
+        }.executeOnExecutor(GuardedAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
