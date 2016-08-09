@@ -1,6 +1,6 @@
 {
   "name": "react-native-udp",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "node's dgram API for react-native",
   "main": "UdpSockets.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "events": "^1.0.2",
     "inherits": "^2.0.1",
     "ip-regex": "^1.0.3",
+    "lodash.isfunction": "^3.0.8",
     "util": "^0.10.3"
   }
 }
