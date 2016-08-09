@@ -14,6 +14,8 @@
 
 var inherits = require('inherits')
 var EventEmitter = require('events').EventEmitter
+var isFunction = require('lodash.isfunction')
+
 var {
   DeviceEventEmitter,
   NativeModules
@@ -108,14 +110,24 @@ UdpSocket.prototype.bind = function(port, address, callback) {
   })
 }
 
-UdpSocket.prototype.close = function() {
+UdpSocket.prototype.close = function(fn) {
+  var self = this
+
   if (this._destroyed) return
 
   this._destroyed = true
   this._debug('closing')
   this._subscription.remove();
 
-  Sockets.close(this._id, this._debug.bind(this, 'closed'))
+
+  Sockets.close(this._id, function() {
+    self._debug('closed')
+
+    if (isFunction(fn)) {
+      fn()
+    }
+  });
+
   this.emit('close')
 }
 
